@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PeopleDetailsCL6</string>
+
+    <string name="user_identification">%s (%s)</string>
+    <string name="adddress">Lives at: %s\n%s, %s\n%s</string>
+    <string name="phone_number">Phone No: %s</string>
+    <string name="company_name">Works at: %s</string>
+    <string name="website">Know more about %s at: %s</string>
+    <string name="select_user">Please Select a User to View Details</string>
+    <string name="show_posts_button">Show %s\'s Posts</string>
+    <string name="user_posts">%s\'s Posts</string>
+
+</resources>
