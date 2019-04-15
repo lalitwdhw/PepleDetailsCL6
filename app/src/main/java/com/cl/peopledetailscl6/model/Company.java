@@ -1,9 +1,9 @@
 
-package com.cl.peopledetailscl6.Model;
+package com.cl.peopledetailscl6.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -19,12 +19,9 @@ public class Company implements Parcelable
     @SerializedName("bs")
     @Expose
     private String bs;
+
     public final static Parcelable.Creator<Company> CREATOR = new Creator<Company>() {
 
-
-        @SuppressWarnings({
-            "unchecked"
-        })
         public Company createFromParcel(Parcel in) {
             return new Company(in);
         }
@@ -33,30 +30,33 @@ public class Company implements Parcelable
             return (new Company[size]);
         }
 
-    }
-    ;
+    };
 
     protected Company(Parcel in) {
-        this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.catchPhrase = ((String) in.readValue((String.class.getClassLoader())));
-        this.bs = ((String) in.readValue((String.class.getClassLoader())));
+        this.name = in.readString();
+        this.catchPhrase = in.readString();
+        this.bs = in.readString();
     }
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Company() {
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(name);
+        dest.writeValue(catchPhrase);
+        dest.writeValue(bs);
     }
 
+    public int describeContents() {
+        return  0;
+    }
+
+
     /**
-     * 
+     * Parameterised Constructor
      * @param catchPhrase
      * @param name
      * @param bs
      */
     public Company(String name, String catchPhrase, String bs) {
-        super();
         this.name = name;
         this.catchPhrase = catchPhrase;
         this.bs = bs;
@@ -84,16 +84,6 @@ public class Company implements Parcelable
 
     public void setBs(String bs) {
         this.bs = bs;
-    }
-
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(name);
-        dest.writeValue(catchPhrase);
-        dest.writeValue(bs);
-    }
-
-    public int describeContents() {
-        return  0;
     }
 
 }

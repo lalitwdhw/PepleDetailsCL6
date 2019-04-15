@@ -1,5 +1,5 @@
 
-package com.cl.peopledetailscl6.Model;
+package com.cl.peopledetailscl6.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -33,12 +33,9 @@ public class User implements Parcelable
     @SerializedName("company")
     @Expose
     private Company company;
+
     public final static Parcelable.Creator<User> CREATOR = new Creator<User>() {
 
-
-        @SuppressWarnings({
-            "unchecked"
-        })
         public User createFromParcel(Parcel in) {
             return new User(in);
         }
@@ -47,29 +44,36 @@ public class User implements Parcelable
             return (new User[size]);
         }
 
-    }
-    ;
+    };
 
     protected User(Parcel in) {
-        this.id = ((int) in.readValue((int.class.getClassLoader())));
-        this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.username = ((String) in.readValue((String.class.getClassLoader())));
-        this.email = ((String) in.readValue((String.class.getClassLoader())));
+        this.id = in.readInt();
+        this.name = in.readString();
+        this.username = in.readString();
+        this.email = in.readString();
         this.address = ((Address) in.readValue((Address.class.getClassLoader())));
-        this.phone = ((String) in.readValue((String.class.getClassLoader())));
-        this.website = ((String) in.readValue((String.class.getClassLoader())));
+        this.phone = in.readString();
+        this.website = in.readString();
         this.company = ((Company) in.readValue((Company.class.getClassLoader())));
     }
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public User() {
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
+        dest.writeValue(name);
+        dest.writeValue(username);
+        dest.writeValue(email);
+        dest.writeValue(address);
+        dest.writeValue(phone);
+        dest.writeValue(website);
+        dest.writeValue(company);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
     /**
-     * 
+     * Parameterised Constructor
      * @param id
      * @param phone
      * @param username
@@ -155,19 +159,5 @@ public class User implements Parcelable
         this.company = company;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(id);
-        dest.writeValue(name);
-        dest.writeValue(username);
-        dest.writeValue(email);
-        dest.writeValue(address);
-        dest.writeValue(phone);
-        dest.writeValue(website);
-        dest.writeValue(company);
-    }
-
-    public int describeContents() {
-        return  0;
-    }
 
 }

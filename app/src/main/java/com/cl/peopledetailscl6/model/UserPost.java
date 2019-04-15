@@ -1,8 +1,8 @@
-package com.cl.peopledetailscl6.Model;
+package com.cl.peopledetailscl6.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,22 +11,19 @@ public class UserPost implements Parcelable
 
     @SerializedName("userId")
     @Expose
-    private long userId;
+    private int userId;
     @SerializedName("id")
     @Expose
-    private long id;
+    private int id;
     @SerializedName("title")
     @Expose
     private String title;
     @SerializedName("body")
     @Expose
     private String body;
+
     public final static Parcelable.Creator<UserPost> CREATOR = new Creator<UserPost>() {
 
-
-        @SuppressWarnings({
-                "unchecked"
-        })
         public UserPost createFromParcel(Parcel in) {
             return new UserPost(in);
         }
@@ -35,31 +32,35 @@ public class UserPost implements Parcelable
             return (new UserPost[size]);
         }
 
-    }
-            ;
+    };
 
     protected UserPost(Parcel in) {
-        this.userId = ((long) in.readValue((long.class.getClassLoader())));
-        this.id = ((long) in.readValue((long.class.getClassLoader())));
-        this.title = ((String) in.readValue((String.class.getClassLoader())));
-        this.body = ((String) in.readValue((String.class.getClassLoader())));
+        this.userId = in.readInt();
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.body = in.readString();
     }
 
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public UserPost() {
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(userId);
+        dest.writeValue(id);
+        dest.writeValue(title);
+        dest.writeValue(body);
     }
 
+    public int describeContents() {
+        return 0;
+    }
+
+
     /**
-     *
+     * Parameterised Constructor
      * @param id
      * @param body
      * @param title
      * @param userId
      */
-    public UserPost(long userId, long id, String title, String body) {
+    public UserPost(int userId, int id, String title, String body) {
         super();
         this.userId = userId;
         this.id = id;
@@ -67,19 +68,19 @@ public class UserPost implements Parcelable
         this.body = body;
     }
 
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -99,15 +100,5 @@ public class UserPost implements Parcelable
         this.body = body;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(userId);
-        dest.writeValue(id);
-        dest.writeValue(title);
-        dest.writeValue(body);
-    }
-
-    public int describeContents() {
-        return 0;
-    }
 
 }

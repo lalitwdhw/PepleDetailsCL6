@@ -15,5 +15,5 @@
         android:id="@+id/tvName"
         tools:text = "Loreum Ipsum"
         android:textColor="@color/text_color_normal"
-        android:padding="@dimen/margin_small"/>
+        android:padding="@dimen/text_size_small"/>
 </android.support.v7.widget.CardView>

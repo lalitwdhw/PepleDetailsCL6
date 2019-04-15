@@ -1,5 +1,5 @@
 
-package com.cl.peopledetailscl6.Model;
+package com.cl.peopledetailscl6.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -24,12 +24,10 @@ public class Address implements Parcelable
     @SerializedName("geo")
     @Expose
     private Geo geo;
+
     public final static Parcelable.Creator<Address> CREATOR = new Creator<Address>() {
 
 
-        @SuppressWarnings({
-            "unchecked"
-        })
         public Address createFromParcel(Parcel in) {
             return new Address(in);
         }
@@ -38,26 +36,30 @@ public class Address implements Parcelable
             return (new Address[size]);
         }
 
-    }
-    ;
+    };
 
     protected Address(Parcel in) {
-        this.street = ((String) in.readValue((String.class.getClassLoader())));
-        this.suite = ((String) in.readValue((String.class.getClassLoader())));
-        this.city = ((String) in.readValue((String.class.getClassLoader())));
-        this.zipcode = ((String) in.readValue((String.class.getClassLoader())));
+        this.street = in.readString();
+        this.suite = in.readString();
+        this.city = in.readString();
+        this.zipcode = in.readString();
         this.geo = ((Geo) in.readValue((Geo.class.getClassLoader())));
     }
 
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Address() {
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(street);
+        dest.writeValue(suite);
+        dest.writeValue(city);
+        dest.writeValue(zipcode);
+        dest.writeValue(geo);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
     /**
-     * 
+     * Parameterised Constructor
      * @param geo
      * @param zipcode
      * @param street
@@ -65,7 +67,6 @@ public class Address implements Parcelable
      * @param city
      */
     public Address(String street, String suite, String city, String zipcode, Geo geo) {
-        super();
         this.street = street;
         this.suite = suite;
         this.city = city;
@@ -113,16 +114,5 @@ public class Address implements Parcelable
         this.geo = geo;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(street);
-        dest.writeValue(suite);
-        dest.writeValue(city);
-        dest.writeValue(zipcode);
-        dest.writeValue(geo);
-    }
-
-    public int describeContents() {
-        return  0;
-    }
 
 }

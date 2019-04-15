@@ -1,4 +1,4 @@
-package com.cl.peopledetailscl6.Adapter;
+package com.cl.peopledetailscl6.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.cl.peopledetailscl6.Model.UserPost;
+import com.cl.peopledetailscl6.model.UserPost;
 import com.cl.peopledetailscl6.R;
 
 import java.util.List;

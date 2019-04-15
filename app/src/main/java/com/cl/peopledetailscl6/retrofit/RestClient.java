@@ -1,7 +1,6 @@
-package com.cl.peopledetailscl6.Retrofit;
+package com.cl.peopledetailscl6.retrofit;
 
 import android.content.Context;
-import android.provider.SyncStateContract;
 
 import com.cl.peopledetailscl6.Constants;
 
@@ -10,10 +9,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
 
+    private static Retrofit retrofit = null;
 
-    public static Retrofit retrofit = null;
-
-    public static ApiInterface getApiInterface(Context context) {
+    public static ApiInterface getApiInterface() {
         if (retrofit == null) {
             try {
                 retrofit = new Retrofit.Builder()

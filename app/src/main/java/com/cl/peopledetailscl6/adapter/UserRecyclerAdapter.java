@@ -1,4 +1,4 @@
-package com.cl.peopledetailscl6.Adapter;
+package com.cl.peopledetailscl6.adapter;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cl.peopledetailscl6.DataInterfaceUserPosition;
-import com.cl.peopledetailscl6.Model.User;
+import com.cl.peopledetailscl6.model.User;
 import com.cl.peopledetailscl6.R;
 
 import java.util.List;
 
 public class UserRecyclerAdapter extends RecyclerView.Adapter<UserRecyclerAdapter.MyViewHolder> {
 
-    private final DataInterfaceUserPosition dt;
+    private final DataInterfaceUserPosition dataInterfaceUserPosition;
     private List<User> userList;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -32,9 +32,9 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
 }
 
 
-    public UserRecyclerAdapter(List<User> userList, DataInterfaceUserPosition dt) {
+    public UserRecyclerAdapter(List<User> userList, DataInterfaceUserPosition dataInterfaceUserPosition) {
         this.userList = userList;
-        this.dt = dt;
+        this.dataInterfaceUserPosition = dataInterfaceUserPosition;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         holder.cardUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dt.userSelected(mUser);
+                dataInterfaceUserPosition.userSelected(mUser);
             }
         });
     }

@@ -17,7 +17,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin_small"
+            android:padding="@dimen/text_size_small"
             android:textColor="@color/text_color_normal"
             tools:text="Loreum Ipsum" />
 

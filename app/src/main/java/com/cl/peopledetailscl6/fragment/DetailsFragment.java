@@ -1,37 +1,28 @@
-package com.cl.peopledetailscl6.Fragment;
+package com.cl.peopledetailscl6.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cl.peopledetailscl6.Activity.MainActivity;
-import com.cl.peopledetailscl6.Adapter.UserPostRecyclerAdapter;
-import com.cl.peopledetailscl6.Adapter.UserRecyclerAdapter;
+import com.cl.peopledetailscl6.adapter.UserPostRecyclerAdapter;
 import com.cl.peopledetailscl6.Constants;
-import com.cl.peopledetailscl6.DataInterfaceUserPosition;
-import com.cl.peopledetailscl6.Model.User;
-import com.cl.peopledetailscl6.Model.UserPost;
+import com.cl.peopledetailscl6.model.User;
+import com.cl.peopledetailscl6.model.UserPost;
 import com.cl.peopledetailscl6.R;
-import com.cl.peopledetailscl6.Retrofit.RestClient;
+import com.cl.peopledetailscl6.retrofit.RestClient;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,9 +40,9 @@ public class DetailsFragment extends Fragment {
     private TextView tvWebsite;
     private Button buttonShowPosts;
     private RelativeLayout rlPosts;
-    private ProgressBar progress;
-    private RecyclerView recyclerView;
-    private UserPostRecyclerAdapter mAdapter;
+    private ProgressBar progressBar;
+    private RecyclerView recyclerViewUserPosts;
+    private UserPostRecyclerAdapter mAdapterUserPosts;
 
     boolean isPostsShowing = false;
     private User presentUser;
@@ -79,6 +70,10 @@ public class DetailsFragment extends Fragment {
         return view;
     }
 
+    /**
+     * initialize all the variables
+     * @param view
+     */
     private void init(View view)
     {
         llDetails = view.findViewById(R.id.llDetails);
@@ -91,10 +86,15 @@ public class DetailsFragment extends Fragment {
         tvWebsite = view.findViewById(R.id.tvWebsite);
         buttonShowPosts = view.findViewById(R.id.buttonShowPosts);
         rlPosts = view.findViewById(R.id.rlPosts);
-        progress = view.findViewById(R.id.progress);
-        recyclerView = view.findViewById(R.id.recyclerPosts);
+        progressBar = view.findViewById(R.id.progress);
+        recyclerViewUserPosts = view.findViewById(R.id.recyclerPosts);
     }
 
+
+    /**
+     * function to set the details of the received user
+     * @param mUser
+     */
     private void populateDetails(final User mUser)
     {
         llDetails.setVisibility(View.VISIBLE);
@@ -105,10 +105,16 @@ public class DetailsFragment extends Fragment {
 
         tvName.setText(String.format(getResources().getString(R.string.user_identification),mUser.getName(),mUser.getUsername()));
         tvEmail.setText(mUser.getEmail());
-        tvAddress.setText(String.format(getResources().getString(R.string.adddress),mUser.getAddress().getSuite(),mUser.getAddress().getStreet(),mUser.getAddress().getCity(),mUser.getAddress().getZipcode()));
+        tvAddress.setText(String.format(getResources().getString(R.string.adddress),
+                mUser.getAddress().getSuite(),
+                mUser.getAddress().getStreet(),
+                mUser.getAddress().getCity(),
+                mUser.getAddress().getZipcode()));
         tvPhone.setText(String.format(getResources().getString(R.string.phone_number),mUser.getPhone()));
         tvCompany.setText(String.format(getResources().getString(R.string.company_name),mUser.getCompany().getName()));
-        tvWebsite.setText(String.format(getResources().getString(R.string.website),mUser.getName(),mUser.getWebsite()));
+        tvWebsite.setText(String.format(getResources().getString(R.string.website),
+                mUser.getName(),
+                mUser.getWebsite()));
         buttonShowPosts.setText(String.format(getResources().getString(R.string.show_posts_button),mUser.getName()));
 
         buttonShowPosts.setOnClickListener(new View.OnClickListener() {
@@ -116,44 +122,57 @@ public class DetailsFragment extends Fragment {
             public void onClick(View v) {
                 tvSelect.setVisibility(View.VISIBLE);
                 tvSelect.setText(String.format(getResources().getString(R.string.user_posts),mUser.getName()));
-                fetchUsersDetails(mUser.getId());
+                fetchUsersPosts(mUser.getId());
             }
         });
 
         isPostsShowing = false;
     }
 
-    private void fetchUsersDetails(int id)
+
+    /**
+     * function to get user's posts based on their id
+     * @param id
+     */
+    private void fetchUsersPosts(int id)
     {
 
         llDetails.setVisibility(View.GONE);
         rlPosts.setVisibility(View.VISIBLE);
 
-        Call<List<UserPost>> call = RestClient.getApiInterface(getContext()).getUserPosts(id);
+        Call<List<UserPost>> call = RestClient.getApiInterface().getUserPosts(id);
         call.enqueue(new Callback<List<UserPost>>() {
             @Override
             public void onResponse(Call<List<UserPost>>call, Response<List<UserPost>> response) {
-                progress.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 populatePosts(response.body());
             }
 
             @Override
             public void onFailure(Call<List<UserPost>>call, Throwable t) {
-                progress.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(),t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * initialize and set adapter to recycler view for user's posts list
+     * @param posts
+     */
     private void populatePosts(List<UserPost> posts)
     {
-        mAdapter = new UserPostRecyclerAdapter(posts);
+        mAdapterUserPosts = new UserPostRecyclerAdapter(posts);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(mAdapter);
+        recyclerViewUserPosts.setLayoutManager(layoutManager);
+        recyclerViewUserPosts.setAdapter(mAdapterUserPosts);
         isPostsShowing = true;
     }
 
+    /**
+     * function to go back to user details when the user clicks on back button
+     * @param view
+     */
     private void overideBack(View view)
     {
         view.setFocusableInTouchMode(true);
@@ -170,6 +189,7 @@ public class DetailsFragment extends Fragment {
                     }
                     else
                     {
+                        getActivity().findViewById(R.id.tvSelect).setVisibility(View.VISIBLE);
                         return false;
                     }
                 }
